@@ -1,0 +1,52 @@
+/tabela cliente/
+create table cliente(
+Nome varchar(50) not null primary key,
+telefone number(10) not null,
+cpf number(15)not null);
+
+--tabela endereço--
+create table endereco(
+Cd_end number(5)not null primary key,
+Nu_casa number(4) not null,
+Cidade varchar(10) not null,
+Bairro varchar(10) not null,
+Estado varchar(10) not null,
+Rua varchar(15) not null);
+
+---tabela produto---
+create table produto(
+Tamanho_pizza char(1)not null primary key,
+Sabor_pizza varchar2(50),
+pizza_montada varchar2(100)
+);
+
+---tabela itens---
+create table itens(
+Cd_itens varchar(10) not null primary key,
+refrigerante varchar(10),
+cerveja varchar(10),
+suco varchar(10));
+
+--tabela pedido--
+create table pedido(
+Cd_pedido number(5) not null primary key,
+Cd_cliente varchar2(50) not null,
+Cd_produto char(1) not null,
+Cd_itens varchar2(10),
+Cd_endereco number(5)not null,
+CONSTRAINT fk_cliente FOREIGN KEY (Cd_cliente) REFERENCES cliente(Nome),
+CONSTRAINT fk_produto FOREIGN KEY (Cd_produto) REFERENCES produto(Tamanho_pizza),
+CONSTRAINT fk_endereco FOREIGN KEY (Cd_endereco) REFERENCES endereco(Cd_end),
+CONSTRAINT fk_itens  FOREIGN KEY (Cd_itens)  REFERENCES itens(Cd_itens));
+
+---tabela entregas---
+create table entregas(
+Nm_entrega varchar2(50) primary key,
+Cd_entrega number(5) not null,
+CONSTRAINT fk_pedido FOREIGN KEY (Cd_entrega) REFERENCES pedido(Cd_pedido));
+
+---tabela entregador---
+create table entregador(
+Nm_entregador varchar2(50) not null,
+entrega varchar2(100) not null,
+CONSTRAINT fk_entregas FOREIGN KEY (Nm_entregador) REFERENCES entregas(Nm_entrega));

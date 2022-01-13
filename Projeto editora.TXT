@@ -1,0 +1,111 @@
+create table editora(
+edi_codigo number(20),
+edi_nome varchar2(50),
+CONSTRAINT pk_editora PRIMARY KEY(edi_codigo));
+
+create table livro(
+lv_codigo number(3),
+lv_titulo varchar2(50),
+lv_preco number(10,3),
+lv_lancamento date,
+edi_codigo number(3),
+ass_sigla varchar2(10),
+CONSTRAINT pk_livro PRIMARY KEY(lv_codigo),
+CONSTRAINT fk_editora FOREIGN KEY(edi_codigo) REFERENCES editora(edi_codigo));
+
+
+
+create table autor(
+aut_matricula number(10),
+aut_nome varchar2(20),
+aut_cpf number(15),
+aut_data_nasc date,
+aut_nacionalidade varchar2(10),
+CONSTRAINT pk_autor PRIMARY KEY(aut_matricula));
+
+
+create table assunto(
+ass_sigla varchar2(10),
+ass_descricao varchar2(50),
+CONSTRAINT pk_assunto PRIMARY KEY (ass_sigla));
+
+
+create table escreve(
+lv_codigo number(3),
+aut_matricula number(10),
+CONSTRAINT fk_livro FOREIGN KEY (lv_codigo) REFERENCES livro(lv_codigo),
+CONSTRAINT fk_autor FOREIGN KEY (aut_matricula) REFERENCES autor(aut_matricula));
+
+
+insert into livro values (1,'banco de dados para web',32.20,'10/jan/1999',1,'BAN');
+insert into livro values (2,'programa em linguagem C',30.00,'01/oct/1997',1,'PRO');
+insert into livro values (3,'programa em linguagem c++',115.50,'01/nov/1998',3,'PRO');
+insert into livro values (4,'banco de dados de bioinformatica',48.00,null,2,'BAN');
+insert into livro values ('rede de computadores',42.00,'01/sep/1996',2,'RED');
+
+insert into escreve values(1,1);
+insert into escreve values(2,1);
+insert into escreve values(3,2);
+insert into escreve values(4,3);
+insert into escreve values(5,4);
+
+insert into assunto values ('BAN','Banco de dados');
+insert into assunto values ('PRO','Programacao');
+insert into assunto values('RED','Redes');
+insert into assunto values ('SIS','Sistemas Operacionais');
+
+insert into editora values (1,'Mirandela');
+insert into editora values (2,'Editora Via Norte');
+insert into editora values (3,'Editora Ilhas Tijuca');
+insert into editora values (4,'Maria Jose');
+
+insert into autor values (1,'Luiz',null,null,null);
+insert into autor values (2,'Hugo',null,null,null);
+insert into autor values (3,'Joaquim',null,null,null);
+insert into autor values (4,'Regina',null,null,null);
+select * from livro;
+select lv_preco,ass_sigla
+from livro
+where lv_preco>30
+and ass_sigla ='BAN';
+
+select lv_preco,ass_sigla
+from livro
+where lv_preco>50
+and ass_sigla like 'P%';
+
+select lv_lancamento,lv_codigo,lv_titulo,lv_preco,edi_codigo,ass_sigla
+from livro
+where lv_lancamento is null;
+
+select lv_lancamento,lv_codigo,lv_titulo,lv_preco,edi_codigo,ass_sigla
+from livro
+where lv_titulo like 'banco%';
+
+select * from livro;
+
+select lv_lancamento,lv_codigo,lv_titulo,lv_preco,edi_codigo,ass_sigla
+from livro
+where lv_preco between 10 and 60;
+
+select lv_lancamento,lv_codigo,lv_titulo,lv_preco,edi_codigo,ass_sigla
+from livro
+where ass_sigla between 'BAN' and 'PRO';
+
+DELETE FROM livro
+WHERE lv_titulo = 'banco de dados distribuido'
+OR lv_titulo = 'banco de dados para a web';
+select*from livro;
+
+delete from livro
+where edi_codigo>=2
+and lv_preco>45;
+
+update livro 
+set lv_preco=0.0
+where lv_lancamento is null
+and lv_preco<5;
+
+delete from livro
+where ass_sigla <> 'BAN' or 'PRO';
+

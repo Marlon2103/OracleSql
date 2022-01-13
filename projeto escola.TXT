@@ -1,0 +1,57 @@
+tabela aluno
+create table aluno (
+Nr_Rgm number(8),
+Nm_Nome varchar2(40) not null,
+Nm_Pai varchar2(40) not null,
+Nm_Mae varchar2(40) not null,
+Dt_Nascimento Date not null,
+ID_Sexo char(1) not null,
+CONSTRAINT pk_aluno PRIMARY KEY(Nr_Rgm));
+
+tabela matricula
+create table matricula(
+Cd_Classe number(8),
+Nr_Rgm number(8),
+Dt_Matricula date not null,
+CONSTRAINT pk_matricula PRIMARY KEY (Cd_Classe),
+CONSTRAINT pk_matricula PRIMARY KEY (Nr_Rgm),
+CONSTRAINT fk_classe FOREIGN KEY (Cd_Classe) REFERENCES classe(Cd_Classe);
+CONSTRAINT fk_aluno FOREIGN KEY (Nr_Rgm) REFERENCES aluno(Nr_Rgm));
+
+tabela escola
+create table escola(
+Cd_Escola number(6),
+Nm_Escola varchar2(50) not null,
+Ds_Endereço varchar2(50) not null,
+Ds_Bairro varchar2(40) not null,
+CONSTRAINT pk_escola PRIMARY KEY (Cd_Escola));
+
+tabela classe
+create table classe(
+Cd_Classe number(8),
+Nr_Anoletivo number(4) not null,
+Cd_Escola number(6),
+Cd_Grau number(2),
+Nr_Serie number(2) not null,
+Sg_Turma varchar2(2) not null,
+Cd_Periodo number(2),
+CONSTRAINT pk_classe PRIMARY KEY(Cd_Classe),
+CONSTRAINT fk_escola FOREIGN KEY(Cd_Escola) REFERENCES escola(Cd_Escola),
+CONSTRAINT fk_grau FOREIGN KEY(Cd_Grau) REFERENCES grau(Cd_Grau),
+CONSTRAINT fk_periodo FOREIGN KEY(Cd_Periodo) REFERENCES periodo(Cd_Periodo)
+CONSTRAINT ck_classe CHECK (Nr_Anoletivo>=2000));
+
+tabela grau
+create table grau(
+Cd_grau number(2),
+Nm_Grau varchar2(50) not null,
+CONSTRAINT pk_grau FOREIGN KEY(Cd_Grau));
+
+tabela periodo
+create table(
+Cd_Periodo number(2),
+Nm_Periodo varchar2(50) not null,
+CONSTRAINT pk_periodo FOREIGN KEY(Cd_Periodo));
+
+
+
